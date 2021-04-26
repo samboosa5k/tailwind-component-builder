@@ -1,25 +1,32 @@
-import React, {useReducer} from "react";
+import React, {useEffect, useReducer} from "react";
 import {appReducer} from "../reducers/AppReducer";
 
 export const appState = {
-    nodeArray: []
+    nodeArray: [],
+    nodeProps: [],
+    selectedNode: '',
 }
 
 const initReducer = () => {
     return {
         nodeArray: [],
-        selectedNode: {}
+        nodeProps: [],
+        selectedNode: '',
     }
 }
 
-export const AppContext = React.createContext(appState);
+const AppContext = React.createContext(appState);
 
 export const AppContextProvider = ({children}) => {
     const [state, dispatch] = useReducer(appReducer, appState, initReducer);
     
+   
     return (
         <AppContext.Provider value={{state, dispatch}}>
             {children}
         </AppContext.Provider>
     )
 }
+
+
+export default AppContext;

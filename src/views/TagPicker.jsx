@@ -1,34 +1,56 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import PropTypes from 'prop-types';
 import {CenterVH} from "../wrappers/CenterVH";
-import {AppContext} from "../contexts/AppContext";
+import AppContext from "../contexts/AppContext";
 import {nanoid} from "nanoid";
 
 export const TagPicker = () => {
     const {state, dispatch} = useContext(AppContext);
     const [inputString, setInputString] = useState('');
-    const [validationResponse, setValidationResponse] = useState('');
+    const [validationResponse, setValidationResponse] = useState(false);
+    
+    useEffect(() => {
+        if (validationResponse) {
+            generateElement(inputString)
+        }
+    }, [validationResponse])
     
     const validHTML = (queryString) => {
         return document.createElement(queryString.toUpperCase()).toString() != "[object HTMLUnknownElement]";
     }
     
     const generateElement = (queryString) => {
-        const createdElement = React.createElement(queryString, {id:`${nanoid(4)}`, className:'w-32 h-32 bg-white'}, [])
-        dispatch({type: 'ADD_NODE', payload: createdElement})
+        const elemID = `${nanoid(4)}`;
+        const createdElement = React.createElement(queryString, {
+            id: elemID,
+            className: 'w-32 h-32 p-2 border-2 border-black bg-white'
+        }, [])
+        
+        dispatch({
+            type: 'ADD_NODE',
+            payload: createdElement
+        })
+        
+        dispatch({
+            type:'ADD_NODE_PROPS',
+            payload: {
+                id: elemID,
+                className: 'w-32 h-32 p-2 border-2 border-black bg-white',
+                children: {}
+            }
+        })
+        
         console.log('dispatched -> ', createdElement)
     }
     
     const handleQueryValidation = (queryString) => {
-        setValidationResponse('')
         try {
             const isValidElement = validHTML(queryString);
             console.log('react isvalidelement - ', isValidElement)
-            if(isValidElement){
-                setValidationResponse('valid element!');
-                generateElement(queryString)
+            if (isValidElement) {
+                setValidationResponse(true);
             } else {
-                setValidationResponse('Not an element!');
+                setValidationResponse(false);
             }
             
         } catch (e) {
@@ -52,12 +74,16 @@ export const TagPicker = () => {
                            placeholder="div" value={inputString}/>
                 </div>
                 <CenterVH>
-                    <button type="button" onClick={()=>handleQueryValidation(inputString)}
+                    <button type="button" onClick={() => handleQueryValidation(inputString)}
                             className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Check if Valid Element
+                        Create Element
+                    </button>
+                    <button type="button" onClick={() => handleQueryValidation(inputString)}
+                            className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Insert Child
                     </button>
                 </CenterVH>
-                <p>{validationResponse}</p>
+                <p>{(validationResponse) ? 'You just created a new element!' : 'Sorry, that tag type is not recognized'}</p>
             </div>
         
         </CenterVH>
