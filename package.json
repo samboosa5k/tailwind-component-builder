@@ -2,26 +2,30 @@
   "name": "tailwind_component_builder",
   "version": "1.0.0",
   "description": "React based Html UI component builder using tailwind classes",
-  "main": "index.js",
+  "main": "index.tsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack serve --config webpack.config.js --hot"
+    "start": "webpack serve --config webpack.config.js --hot",
+    "flow": "flow",
+    "pretest": "npm run flow && npm run lint"
   },
   "author": "Jasper Verbon",
   "license": "ISC",
   "dependencies": {
-    "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.13.16",
     "@babel/core": "^7.13.16",
     "@babel/preset-env": "^7.13.15",
     "@babel/preset-react": "^7.13.13",
     "@tailwindcss/postcss7-compat": "^2.1.2",
+    "@types/react": "^17.0.4",
+    "@types/react-dom": "^17.0.3",
     "autoprefixer": "^9.8.6",
+    "babel-cli": "^6.26.0",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.4",
+    "flow-bin": "^0.149.0",
     "html-webpack-plugin": "^5.3.1",
     "mini-css-extract-plugin": "^1.5.0",
     "nanoid": "^3.1.22",
@@ -29,9 +33,12 @@
     "postcss-cli": "^8.3.1",
     "postcss-loader": "^5.2.0",
     "prop-types": "^15.7.2",
+    "react": "^17.0.2",
     "react-hot-loader": "^4.13.0",
     "style-loader": "^2.0.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2",
+    "ts-loader": "^9.1.1",
+    "typescript": "^4.2.4",
     "webpack": "^5.35.1",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"

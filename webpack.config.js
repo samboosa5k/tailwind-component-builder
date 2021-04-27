@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     mode: "development",
-    entry: './index.js',
+    entry: './index.tsx',
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
@@ -45,11 +45,15 @@ module.exports = {
                     }
                 }
             },
+            {test: /\.tsx?$/, loader: 'ts-loader'},
             {
                 test: /\.css$/i,
                 include: path.resolve(__dirname, 'src'),
                 use: ['style-loader', 'css-loader', 'postcss-loader'],
             },
         ]
-    }
+    },
+    resolve: {
+        extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
+    },
 }
